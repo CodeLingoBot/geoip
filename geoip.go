@@ -110,7 +110,7 @@ func SetCustomDirectory(dir string) {
 	C.GeoIP_setup_custom_directory(cdir)
 }
 
-// OpenType opens a specified GeoIP database type in the default location with the
+// OpenTypeFlag opens a specified GeoIP database type in the default location with the
 // specified GeoIPOptions flag. Constants are defined for each database type
 // (for example GEOIP_COUNTRY_EDITION).
 func OpenTypeFlag(dbType int, flag int) (*GeoIP, error) {
@@ -139,7 +139,7 @@ func OpenType(dbType int) (*GeoIP, error) {
 	return OpenTypeFlag(dbType, GEOIP_MEMORY_CACHE)
 }
 
-// Takes an IPv4 address string and returns the organization name for that IP.
+// GetOrg takes an IPv4 address string and returns the organization name for that IP.
 // Requires the GeoIP organization database.
 func (gi *GeoIP) GetOrg(ip string) string {
 	name, _ := gi.GetName(ip)
@@ -185,7 +185,7 @@ type GeoIPRecord struct {
 	ContinentCode string
 }
 
-// Returns the "City Record" for an IP address. Requires the GeoCity(Lite)
+// GetRecord returns the "City Record" for an IP address. Requires the GeoCity(Lite)
 // database - http://www.maxmind.com/en/city
 func (gi *GeoIP) GetRecord(ip string) *GeoIPRecord {
 	if gi.db == nil {
@@ -229,7 +229,7 @@ func (gi *GeoIP) GetRecord(ip string) *GeoIPRecord {
 	return rec
 }
 
-// Returns the country code and region code for an IP address. Requires
+// GetRegion returns the country code and region code for an IP address. Requires
 // the GeoIP Region database.
 func (gi *GeoIP) GetRegion(ip string) (string, string) {
 	if gi.db == nil {
@@ -254,7 +254,7 @@ func (gi *GeoIP) GetRegion(ip string) (string, string) {
 	return countryCode, regionCode
 }
 
-// Returns the region name given a country code and region code
+// GetRegionName returns the region name given a country code and region code
 func GetRegionName(countryCode, regionCode string) string {
 
 	cc := C.CString(countryCode)
@@ -296,7 +296,7 @@ func (gi *GeoIP) GetNameV6(ip string) (name string, netmask int) {
 	return
 }
 
-// Takes an IPv4 address string and returns the country code for that IP
+// GetCountry takes an IPv4 address string and returns the country code for that IP
 // and the netmask for that IP range.
 func (gi *GeoIP) GetCountry(ip string) (cc string, netmask int) {
 	if gi.db == nil {
